@@ -1,0 +1,12 @@
+# GitHub
+- type: github
+  icon: 'fab fa-github'
+
+# Email
+- type: email
+  icon: 'fas fa-envelope'
+  noblank: true
+
+# RSS
+- type: rss
+  icon: 'fas fa-rss'

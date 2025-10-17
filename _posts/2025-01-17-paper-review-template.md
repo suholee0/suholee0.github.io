@@ -1,6 +1,6 @@
 ---
 title: "[논문리뷰] ResNet: Deep Residual Learning for Image Recognition"
-date: 2025-01-17
+date: 2025-01-17 00:00:00 +0900
 categories: [Paper Review, Computer Vision]
 tags: [resnet, cnn, deep-learning, image-classification]
 math: true

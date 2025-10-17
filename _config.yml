@@ -1,18 +1,27 @@
 # Site Settings
+lang: ko-KR
 title: Deep Learning Paper Reviews
 tagline: 딥러닝 논문 리뷰 블로그
 description: 최신 딥러닝 논문을 리뷰하고 정리합니다
 url: "https://suholee0.github.io"
 baseurl: "" # username.github.io 형식이므로 비워둡니다
 
-# Author
-author:
-  name: Suho Lee # 이름을 입력하세요
-  email: lsw4221@gmail.com # 이메일을 입력하세요
-  github: suholee0 # GitHub 사용자명을 입력하세요
+# Author & Social
+author: Suho Lee
+social:
+  name: Suho Lee
+  email: lsw4221@gmail.com
+  links:
+    - https://github.com/suholee0
 
-# Theme
-theme: jekyll-theme-chirpy
+github:
+  username: suholee0
+
+twitter:
+  username: # twitter username
+
+# Theme (GitHub Pages에서는 remote_theme만 사용)
+# theme: jekyll-theme-chirpy
 remote_theme: cotes2020/jekyll-theme-chirpy
 
 # Timezone

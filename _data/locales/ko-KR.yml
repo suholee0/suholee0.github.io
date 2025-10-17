@@ -1,0 +1,61 @@
+# Korean translations for Chirpy theme
+
+# Layout
+layout:
+  post: 포스트
+  category: 카테고리
+  tag: 태그
+
+# Sidebar
+sidebar:
+  home: 홈
+  categories: 카테고리
+  tags: 태그
+  archives: 아카이브
+  about: 소개
+
+# Post
+post:
+  written_by: 작성자
+  posted: 작성일
+  updated: 수정일
+  words: 단어
+  pageview_measure: 조회수
+  read_time:
+    unit: 분
+    prompt: 읽기
+  relate_posts: 관련 포스트
+  share: 공유하기
+  button:
+    next: 다음
+    previous: 이전
+    copy_link:
+      succeed: 복사되었습니다!
+    share_link:
+      title: 링크 복사
+      succeed: 링크가 복사되었습니다!
+
+# Search
+search:
+  hint: 검색
+  cancel: 취소
+  no_results: 검색 결과가 없습니다.
+
+# Panel
+panel:
+  lastmod: 최근 업데이트
+  trending_tags: 인기 태그
+  toc: 목차
+
+# Copyright
+copyright:
+  license:
+    template: 이 포스트는 작성자의 :LICENSE_NAME 라이센스를 따릅니다.
+    name: CC BY 4.0
+    link: https://creativecommons.org/licenses/by/4.0/
+
+# Meta
+meta: Powered by :PLATFORM with :THEME theme.
+
+not_found:
+  statment: 죄송합니다. URL이 잘못되었거나 페이지가 삭제되었습니다.
