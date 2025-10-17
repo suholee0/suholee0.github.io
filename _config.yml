@@ -2,8 +2,8 @@
 title: Deep Learning Paper Reviews
 tagline: 딥러닝 논문 리뷰 블로그
 description: 최신 딥러닝 논문을 리뷰하고 정리합니다
-url: "https://suholee0.github.io/" # GitHub Pages URL로 변경하세요
-baseurl: "/suholee0.github.io" # 레포지토리 이름
+url: "https://suholee0.github.io"
+baseurl: "" # username.github.io 형식이므로 비워둡니다
 
 # Author
 author:
@@ -44,7 +44,7 @@ jekyll-archives:
 comments:
   active: giscus # 또는 disqus, utterances
   giscus:
-    repo: yourusername/personal-tech-blog # GitHub 레포지토리
+    repo: suholee0/suholee0.github.io # GitHub 레포지토리
     repo_id: # Giscus 설정시 자동 생성
     category: Announcements
     category_id: # Giscus 설정시 자동 생성
