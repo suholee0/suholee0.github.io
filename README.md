@@ -1,146 +1,148 @@
-# Deep Learning Paper Review Blog
+# 딥러닝 논문 리뷰 블로그 관리 가이드
 
-딥러닝 논문을 리뷰하고 정리하는 개인 기술 블로그입니다.
+블로그 URL: https://suholee0.github.io
 
-## 🚀 시작하기
+## 📝 새 포스트 작성하기
 
-### 1. 필수 준비사항
-- Ruby 2.5.0 이상
-- RubyGems
-- GCC 및 Make
-
-### 2. 로컬에서 실행하기
-
-```bash
-# 1. 의존성 설치
-bundle install
-
-# 2. 로컬 서버 실행
-bundle exec jekyll serve
-
-# 3. 브라우저에서 확인
-# http://localhost:4000
+### 1. 포스트 파일 생성
+`_posts` 폴더에 새 파일 생성:
+```
+_posts/YYYY-MM-DD-제목.md
 ```
 
-### 3. GitHub Pages 배포하기
+예시: `_posts/2025-01-20-transformer-paper-review.md`
 
-1. GitHub에서 새 레포지토리 생성 (`yourusername.github.io` 또는 원하는 이름)
+### 2. Front Matter 작성 (필수)
+파일 최상단에 다음 형식으로 작성:
 
-2. `_config.yml` 파일 수정:
-   ```yaml
-   url: "https://yourusername.github.io"
-   baseurl: "/repository-name" # 레포지토리 이름 (username.github.io인 경우 비워두기)
-   ```
+```yaml
+---
+title: "[논문리뷰] 논문 제목"
+date: YYYY-MM-DD HH:MM:SS +0900
+categories: [Paper Review, 분야]
+tags: [태그1, 태그2, 태그3]
+math: true                    # 수식 사용시
+mermaid: true                 # 다이어그램 사용시
+image:
+  path: /assets/img/파일명.png  # 대표 이미지 (선택)
+  alt: 이미지 설명
+---
+```
 
-3. Git 초기화 및 푸시:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/yourusername/repository-name.git
-   git push -u origin main
-   ```
+### 3. 카테고리 옵션
+- `[Paper Review, Computer Vision]` - CNN, Vision Transformer 등
+- `[Paper Review, NLP]` - Transformer, BERT, GPT 등
+- `[Paper Review, Generative Model]` - GAN, VAE, Diffusion 등
+- `[Paper Review, Reinforcement Learning]` - RL 관련
+- `[General, Tutorial]` - 튜토리얼, 가이드
 
-4. GitHub 레포지토리 Settings → Pages:
-   - Source: `GitHub Actions` 선택
-   - 몇 분 후 `https://yourusername.github.io/repository-name`에서 확인
+### 4. 포스트 작성 후 배포
+```bash
+git add .
+git commit -m "Add: 논문제목 리뷰"
+git push origin main
+```
 
-## 📝 포스트 작성하기
+5-10분 후 블로그에 자동 반영됨
 
-### 새 논문 리뷰 작성
+## 🎨 블로그 설정 변경
 
-1. `_posts` 폴더에 새 파일 생성:
-   - 파일명 형식: `YYYY-MM-DD-paper-title.md`
-   - 예: `2025-01-20-attention-is-all-you-need.md`
+### 블로그 제목/설명 변경
+`_config.yml` 파일 수정:
+```yaml
+title: 블로그 제목
+tagline: 부제목
+description: 블로그 설명
+```
 
-2. Front Matter 작성:
-   ```markdown
-   ---
-   title: "[논문리뷰] Attention Is All You Need"
-   date: 2025-01-20
-   categories: [Paper Review, NLP]
-   tags: [transformer, attention, nlp]
-   math: true
-   ---
-   ```
+### 작성자 정보 변경
+`_config.yml` 파일 수정:
+```yaml
+author:
+  name: 이름
+  email: 이메일
+  github: GitHub 아이디
+```
 
-3. 마크다운으로 내용 작성
+### 댓글 기능 활성화
+1. [Giscus](https://giscus.app) 접속
+2. 설정 후 생성된 정보를 `_config.yml`에 추가:
+```yaml
+comments:
+  active: giscus
+  giscus:
+    repo: suholee0/suholee0.github.io
+    repo_id: 자동생성값
+    category: Announcements
+    category_id: 자동생성값
+```
+
+## 📁 중요 파일/폴더 구조
+
+```
+├── _posts/          # 블로그 포스트 (여기에 글 작성!)
+├── _config.yml      # 블로그 전체 설정
+├── assets/
+│   └── img/        # 포스트에 사용할 이미지 저장
+├── _sass/          # 스타일 커스터마이징 (고급)
+└── index.html      # 홈페이지 (수정 불필요)
+```
+
+## 💡 작성 팁
 
 ### 수식 작성
-
-LaTeX 문법을 사용하여 수식 작성 가능:
-
-- 인라인 수식: `$수식$`
-- 블록 수식: `$$수식$$`
-
-예시:
 ```markdown
-Attention 수식: $$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
+인라인 수식: $a^2 + b^2 = c^2$
+
+블록 수식:
+$$
+\mathbf{Attention}(Q,K,V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
 ```
 
-### 코드 하이라이팅
+### 이미지 삽입
+```markdown
+![설명](/assets/img/image.png)
+```
 
+### 코드 블록
 ````markdown
 ```python
-def attention(query, key, value):
-    scores = torch.matmul(query, key.transpose(-2, -1))
-    scores = scores / math.sqrt(d_k)
-    weights = F.softmax(scores, dim=-1)
-    output = torch.matmul(weights, value)
-    return output
+def attention(q, k, v):
+    scores = torch.matmul(q, k.transpose(-2, -1))
+    return torch.matmul(F.softmax(scores, dim=-1), v)
 ```
 ````
 
-## 🎨 테마 커스터마이징
+### 목차 자동 생성
+Front Matter에 `toc: true` 추가하면 자동으로 목차 생성
 
-현재 [Chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) 테마를 사용 중입니다.
+## 🔧 로컬에서 미리보기
 
-### 색상 변경
-`_sass/addon/variables.scss` 파일에서 색상 변경 가능
-
-### 폰트 변경
-`_sass/addon/commons.scss` 파일에서 폰트 설정 변경
-
-## 📂 디렉토리 구조
-
-```
-personal-tech-blog/
-├── _posts/           # 블로그 포스트
-├── _papers/          # 논문 리뷰 (선택사항)
-├── _config.yml       # Jekyll 설정
-├── _layouts/         # 레이아웃 템플릿
-├── _includes/        # 재사용 가능한 컴포넌트
-├── _sass/            # SCSS 스타일
-├── assets/           # 이미지, JS, CSS 등
-│   ├── img/
-│   ├── js/
-│   └── css/
-└── index.html        # 홈페이지
-```
-
-## 🔧 문제 해결
-
-### Bundle 설치 오류
 ```bash
-gem install bundler
-bundle update
-```
-
-### 로컬 서버 실행 오류
-```bash
-bundle exec jekyll clean
+# 의존성 설치 (최초 1회)
 bundle install
+
+# 로컬 서버 실행
 bundle exec jekyll serve
+
+# 브라우저에서 확인
+# http://localhost:4000
 ```
+
+## ⚠️ 주의사항
+
+1. **파일명 형식 엄수**: `YYYY-MM-DD-제목.md`
+2. **Front Matter 필수**: 없으면 포스트가 표시되지 않음
+3. **이미지 경로**: `/assets/img/` 폴더 사용
+4. **푸시 후 반영 시간**: 5-10분 소요
 
 ## 📚 참고 자료
 
-- [Jekyll 공식 문서](https://jekyllrb.com/docs/)
-- [GitHub Pages 문서](https://docs.github.com/en/pages)
 - [Chirpy 테마 문서](https://chirpy.cotes.page/)
-- [Markdown 가이드](https://www.markdownguide.org/)
+- [Jekyll 변수](https://jekyllrb.com/docs/variables/)
+- [Markdown 문법](https://www.markdownguide.org/cheat-sheet/)
 
-## 📄 라이센스
+---
 
-MIT License
+문제 발생시 Issues 탭에 문의
