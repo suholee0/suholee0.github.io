@@ -1,0 +1,86 @@
+# Site Settings
+title: Deep Learning Paper Reviews
+tagline: 딥러닝 논문 리뷰 블로그
+description: 최신 딥러닝 논문을 리뷰하고 정리합니다
+url: "https://suholee0.github.io/" # GitHub Pages URL로 변경하세요
+baseurl: "/suholee0.github.io" # 레포지토리 이름
+
+# Author
+author:
+  name: Suho Lee # 이름을 입력하세요
+  email: lsw4221@gmail.com # 이메일을 입력하세요
+  github: suholee0 # GitHub 사용자명을 입력하세요
+
+# Theme
+theme: jekyll-theme-chirpy
+remote_theme: cotes2020/jekyll-theme-chirpy
+
+# Timezone
+timezone: Asia/Seoul
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-archives
+
+# Pagination
+paginate: 10
+paginate_path: "/page/:num/"
+
+# Archives
+jekyll-archives:
+  enabled:
+    - categories
+    - tags
+  layout: archive
+  permalinks:
+    category: /categories/:name/
+    tag: /tags/:name/
+
+# Comments (optional - Disqus, Utterances, Giscus 등 선택 가능)
+comments:
+  active: giscus # 또는 disqus, utterances
+  giscus:
+    repo: yourusername/personal-tech-blog # GitHub 레포지토리
+    repo_id: # Giscus 설정시 자동 생성
+    category: Announcements
+    category_id: # Giscus 설정시 자동 생성
+
+# Analytics (optional)
+google_analytics:
+  id: # Google Analytics ID
+
+# Markdown
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  math_engine: mathjax # 수식 지원
+
+# Collections for paper reviews
+collections:
+  papers:
+    output: true
+    permalink: /papers/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      math: true
+  - scope:
+      path: ""
+      type: papers
+    values:
+      layout: post
+      comments: true
+      toc: true
+      math: true
