@@ -32,8 +32,9 @@
         </a>
       </li>
       <!-- the real tabs -->
-      {% assign tabs = site.tabs | sort: 'order' %}
-      {% for tab in tabs %}
+      {% if site.tabs %}
+        {% assign tabs = site.tabs | sort: 'order' %}
+        {% for tab in tabs %}
         <li class="nav-item{% if tab.url == page.url %} active{% endif %}">
           <a href="{{ tab.url | relative_url }}" class="nav-link">
             <i class="fa-fw {{ tab.icon }}"></i>
@@ -41,7 +42,8 @@
             <span>{{ tab.title | default: tab_name | upcase }}</span>
           </a>
         </li> <!-- .nav-item -->
-      {% endfor %}
+        {% endfor %}
+      {% endif %}
     </ul>
   </nav>
 
