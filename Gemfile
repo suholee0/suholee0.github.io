@@ -1,16 +1,10 @@
 source "https://rubygems.org"
 
-# GitHub Pages 호환을 위한 설정
-gem "github-pages", group: :jekyll_plugins
-gem "webrick", "~> 1.7"
+gem "jekyll", "~> 4.3.2"
+gem "jekyll-theme-chirpy", "~> 7.0", ">= 7.0.1"
 
-group :jekyll_plugins do
-  gem "jekyll-feed"
-  gem "jekyll-seo-tag"
-  gem "jekyll-sitemap"
-  gem "jekyll-paginate"
-  gem "jekyll-gist"
-  gem "jekyll-include-cache"
+group :test do
+  gem "html-proofer", "~> 5.0"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem

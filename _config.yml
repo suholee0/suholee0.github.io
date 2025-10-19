@@ -1,54 +1,73 @@
-# Site Settings
+# The Site Configuration
+
+# Import the theme
+theme: jekyll-theme-chirpy
+
+# The language of the webpage
 lang: ko-KR
+
+# Site title
 title: Deep Learning Paper Reviews
+
+# Site tagline
 tagline: 딥러닝 논문 리뷰 블로그
+
+# Site description
 description: 최신 딥러닝 논문을 리뷰하고 정리합니다
+
+# Site URL
 url: "https://suholee0.github.io"
-baseurl: "" # username.github.io 형식이므로 비워둡니다
+baseurl: ""
 
-# Author
-author: Suho Lee
+# GitHub username
+github:
+  username: suholee0
 
-# Minima theme settings
-minima:
-  social_links:
-    github: suholee0
-  skin: auto
+# Twitter username
+twitter:
+  username: # twitter username
 
-header_pages:
-  - about.md
-  - categories.html
-  - tags.html
-
-# Theme - GitHub Pages 지원 테마
-# theme: minima
-remote_theme: jekyll/minima@v2.5.1
+# Social
+social:
+  name: Suho Lee
+  email: lsw4221@gmail.com
+  links:
+    - https://github.com/suholee0
 
 # Timezone
 timezone: Asia/Seoul
 
-# Plugins
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-paginate
-  - jekyll-gist
-  - jekyll-include-cache
-
 # Pagination
 paginate: 10
-paginate_path: "/page/:num/"
 
-# Archives - GitHub Pages에서는 지원하지 않음
-# jekyll-archives:
-#   enabled:
-#     - categories
-#     - tags
-#   layout: archive
-#   permalinks:
-#     category: /categories/:name/
-#     tag: /tags/:name/
+# The base URL of your site
+permalink: /posts/:title/
+
+# Collections
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      comments: true
+      toc: true
+      permalink: /posts/:title/
+  - scope:
+      path: _drafts
+    values:
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
 
 # Comments (optional - Disqus, Utterances, Giscus 등 선택 가능)
 comments:
