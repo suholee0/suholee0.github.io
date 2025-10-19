@@ -5,9 +5,9 @@ categories: [Paper Review, Computer Vision]
 tags: [resnet, cnn, deep-learning, image-classification]
 math: true
 mermaid: true
-image:
-  path: /assets/img/papers/resnet-architecture.png
-  alt: ResNet Architecture
+# image:
+#   path: /assets/img/papers/resnet-architecture.png
+#   alt: ResNet Architecture
 ---
 
 ## 논문 정보
