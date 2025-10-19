@@ -1,0 +1,30 @@
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ page.description | default: site.description | strip_html | normalize_whitespace | escape }}">
+
+  {% seo title=false %}
+
+  <title>
+    {%- unless page.layout == 'home' -%}
+      {{ page.title | append: ' | ' }}
+    {%- endunless -%}
+    {{ site.title }}
+  </title>
+
+  <!-- Favicons -->
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+  <!-- Chirpy Theme CSS from CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jekyll-theme-chirpy@7.0.1/assets/css/jekyll-theme-chirpy.min.css">
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
