@@ -19,6 +19,9 @@ description: 최신 딥러닝 논문을 리뷰하고 정리합니다
 url: "https://suholee0.github.io"
 baseurl: ""
 
+# Avatar/Profile image (사이드바 프로필 이미지)
+avatar: "/assets/img/profile.png"  # 이미지 파일 경로
+
 # GitHub username
 github:
   username: suholee0
