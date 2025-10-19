@@ -7,9 +7,7 @@ url: "https://suholee0.github.io"
 baseurl: "" # username.github.io 형식이므로 비워둡니다
 
 # Author
-author:
-  name: Suho Lee
-  email: lsw4221@gmail.com
+author: Suho Lee
 
 # Minima theme settings
 minima:
