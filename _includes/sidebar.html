@@ -32,18 +32,30 @@
         </a>
       </li>
       <!-- the real tabs -->
-      {% if site.tabs %}
-        {% assign tabs = site.tabs | sort: 'order' %}
-        {% for tab in tabs %}
-        <li class="nav-item{% if tab.url == page.url %} active{% endif %}">
-          <a href="{{ tab.url | relative_url }}" class="nav-link">
-            <i class="fa-fw {{ tab.icon }}"></i>
-            {% capture tab_name %}{{ tab.url | split: '/' }}{% endcapture %}
-            <span>{{ tab.title | default: tab_name | upcase }}</span>
-          </a>
-        </li> <!-- .nav-item -->
-        {% endfor %}
-      {% endif %}
+      <li class="nav-item{% if page.url == '/archives/' %} active{% endif %}">
+        <a href="{{ '/archives/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-archive"></i>
+          <span>ARCHIVES</span>
+        </a>
+      </li>
+      <li class="nav-item{% if page.url == '/categories/' %} active{% endif %}">
+        <a href="{{ '/categories/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-stream"></i>
+          <span>CATEGORIES</span>
+        </a>
+      </li>
+      <li class="nav-item{% if page.url == '/tags/' %} active{% endif %}">
+        <a href="{{ '/tags/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-tags"></i>
+          <span>TAGS</span>
+        </a>
+      </li>
+      <li class="nav-item{% if page.url == '/about/' %} active{% endif %}">
+        <a href="{{ '/about/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-info-circle"></i>
+          <span>ABOUT</span>
+        </a>
+      </li>
     </ul>
   </nav>
 
