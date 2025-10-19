@@ -1,14 +1,16 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.3.0"
-gem "jekyll-theme-chirpy", "~> 6.2"
+# GitHub Pages 호환을 위한 설정
+gem "github-pages", group: :jekyll_plugins
+gem "webrick", "~> 1.7"
 
 group :jekyll_plugins do
   gem "jekyll-feed"
   gem "jekyll-seo-tag"
   gem "jekyll-sitemap"
   gem "jekyll-paginate"
-  gem "jekyll-archives"
+  gem "jekyll-gist"
+  gem "jekyll-include-cache"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem

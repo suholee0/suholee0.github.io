@@ -6,23 +6,25 @@ description: 최신 딥러닝 논문을 리뷰하고 정리합니다
 url: "https://suholee0.github.io"
 baseurl: "" # username.github.io 형식이므로 비워둡니다
 
-# Author & Social
-author: Suho Lee
-social:
+# Author
+author:
   name: Suho Lee
   email: lsw4221@gmail.com
-  links:
-    - https://github.com/suholee0
 
-github:
-  username: suholee0
+# Minima theme settings
+minima:
+  social_links:
+    github: suholee0
+  skin: auto
 
-twitter:
-  username: # twitter username
+header_pages:
+  - about.md
+  - categories.html
+  - tags.html
 
-# Theme (GitHub Pages에서는 remote_theme만 사용)
-# theme: jekyll-theme-chirpy
-remote_theme: cotes2020/jekyll-theme-chirpy
+# Theme - GitHub Pages 지원 테마
+# theme: minima
+remote_theme: jekyll/minima@v2.5.1
 
 # Timezone
 timezone: Asia/Seoul
@@ -33,21 +35,22 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-paginate
-  - jekyll-archives
+  - jekyll-gist
+  - jekyll-include-cache
 
 # Pagination
 paginate: 10
 paginate_path: "/page/:num/"
 
-# Archives
-jekyll-archives:
-  enabled:
-    - categories
-    - tags
-  layout: archive
-  permalinks:
-    category: /categories/:name/
-    tag: /tags/:name/
+# Archives - GitHub Pages에서는 지원하지 않음
+# jekyll-archives:
+#   enabled:
+#     - categories
+#     - tags
+#   layout: archive
+#   permalinks:
+#     category: /categories/:name/
+#     tag: /tags/:name/
 
 # Comments (optional - Disqus, Utterances, Giscus 등 선택 가능)
 comments:
