@@ -27,8 +27,8 @@
           <!-- panel -->
           <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 mb-5 text-muted">
             <div class="access">
-              {% include_cached update-list.html lang=lang %}
-              {% include_cached trending-tags.html lang=lang %}
+              {% include update-list.html lang=lang %}
+              {% include trending-tags.html lang=lang %}
             </div>
 
             {% for _include in layout.panel_includes %}
@@ -46,11 +46,11 @@
               {% include {{ _include_path }} lang=lang %}
             {% endfor %}
 
-            {% include_cached footer.html lang=lang %}
+            {% include footer.html lang=lang %}
           </aside>
         </div>
 
-        {% include_cached search-loader.html %}
+        {% include search-loader.html %}
       </div>
 
       {% include js-selector.html lang=lang %}
