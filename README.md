@@ -1,43 +1,73 @@
-# Chirpy Starter
+# 딥러닝 논문 리뷰 블로그
 
-[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;
-[![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
+딥러닝 논문을 리뷰하고 정리하는 개인 기술 블로그입니다.
 
-When installing the [**Chirpy**][chirpy] theme through [RubyGems.org][gem], Jekyll can only read files in the folders
-`_data`, `_layouts`, `_includes`, `_sass` and `assets`, as well as a small part of options of the `_config.yml` file
-from the theme's gem. If you have ever installed this theme gem, you can use the command
-`bundle info --path jekyll-theme-chirpy` to locate these files.
+- **URL**: https://suholee0.github.io
+- **테마**: Jekyll Chirpy
+- **배포**: GitHub Pages
 
-The Jekyll team claims that this is to leave the ball in the user’s court, but this also results in users not being
-able to enjoy the out-of-the-box experience when using feature-rich themes.
+## 📝 Notion 연동 구조
 
-To fully use all the features of **Chirpy**, you need to copy the other critical files from the theme's gem to your
-Jekyll site. The following is a list of targets:
+이 블로그는 Notion과 자동으로 연동되어 있어, Notion에서 글을 작성하면 자동으로 블로그에 포스팅됩니다.
 
-```shell
-.
-├── _config.yml
-├── _plugins
-├── _tabs
-└── index.html
+### 연동 방식
+- Notion 데이터베이스에서 글 작성 → GitHub Actions가 자동 변환 → Jekyll 블로그에 배포
+- 자세한 설정 방법은 [NOTION_SETUP.md](NOTION_SETUP.md) 참고
+
+### 포스팅 업데이트 방법
+
+1. **Notion 데이터베이스에서 글 작성**
+   - 제목, 내용, 카테고리, 태그 등 작성
+   - 이미지, 수식, 코드블록 모두 지원
+
+2. **published 필드를 `publish required`로 변경**
+   - `not published`: 초안 (동기화 안 됨)
+   - `publish required`: 게시 대기 (동기화됨) ← 이것으로 변경!
+   - `already published`: 이미 게시됨 (재동기화 안 됨)
+
+3. **GitHub Actions 워크플로우 실행**
+   - **자동 실행**: 매주 월요일 오전 9시 (한국시간)
+   - **수동 실행**:
+     1. GitHub 저장소 → Actions 탭
+     2. "Sync Notion to Jekyll" 선택
+     3. "Run workflow" 버튼 클릭
+
+4. **블로그 확인**
+   - 5-10분 후 https://suholee0.github.io 에서 확인
+   - 게시 완료 후 Notion에서 `already published`로 변경 권장
+
+## 🚀 로컬 개발
+
+```bash
+# 의존성 설치
+bundle install
+
+# 로컬 서버 실행
+bundle exec jekyll serve
+
+# http://localhost:4000 에서 확인
 ```
 
-To save you time, and also in case you lose some files while copying, we extract those files/configurations of the
-latest version of the **Chirpy** theme and the [CD][CD] workflow to here, so that you can start writing in minutes.
+## 📁 프로젝트 구조
 
-## Usage
+```
+.
+├── _posts/          # 블로그 포스트 (Notion에서 자동 생성)
+├── _tabs/           # 상단 네비게이션 탭
+├── assets/
+│   └── img/
+│       ├── profile.png    # 프로필 이미지
+│       └── posts/         # 포스트 이미지 (자동 다운로드)
+├── scripts/
+│   └── notion-to-jekyll.js  # Notion 동기화 스크립트
+├── .github/workflows/
+│   ├── pages-deploy.yml     # GitHub Pages 배포
+│   └── notion-sync.yml      # Notion 동기화
+├── _config.yml      # Jekyll 설정
+├── package.json     # Node.js 의존성
+└── NOTION_SETUP.md  # Notion 연동 상세 가이드
+```
 
-Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
+## 📄 라이선스
 
-## Contributing
-
-This repository is automatically updated with new releases from the theme repository. If you encounter any issues or want to contribute to its improvement, please visit the [theme repository][chirpy] to provide feedback.
-
-## License
-
-This work is published under [MIT][mit] License.
-
-[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
-[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
-[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
-[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+[MIT License](LICENSE)
