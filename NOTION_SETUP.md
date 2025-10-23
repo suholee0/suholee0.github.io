@@ -28,7 +28,7 @@
    | 속성명 | 타입 | 설명 |
    |--------|------|------|
    | Title (또는 이름) | Title | 포스트 제목 |
-   | Published (또는 게시) | Checkbox | ✅ 체크시 블로그에 게시 |
+   | published | Select | 옵션: `not published`, `publish required`, `already published` |
    | Category (또는 카테고리) | Select | Paper Review, Tutorial 등 |
    | Tags (또는 태그) | Multi-select | transformer, cnn, gan 등 |
    | Date (또는 날짜) | Date | 작성 날짜 |
@@ -60,7 +60,7 @@
 - 데이터베이스에 새 항목 추가
 - 제목, 내용 작성 (이미지, 수식, 코드 모두 지원)
 - Category, Tags 설정
-- **Published 체크박스 ✅ 체크** (중요!)
+- **published를 `publish required`로 설정** (중요!)
 
 ### 2. 동기화 실행
 
@@ -90,8 +90,11 @@
 
 ## ⚠️ 주의사항
 
-1. **Published 체크 필수** - 체크 안 하면 동기화 안 됨
-2. **속성명** - 한글/영어 모두 지원 (Title/이름, Published/게시 등)
+1. **published 상태 관리**
+   - `not published`: 초안 (동기화 안 됨)
+   - `publish required`: 게시 대기 (동기화됨)
+   - `already published`: 이미 게시됨 (재동기화 안 됨)
+2. **속성명** - 대소문자 구분 (published는 소문자로)
 3. **이미지** - 자동으로 다운로드되어 저장됨
 4. **첫 실행** - npm 패키지 설치로 약간 시간 걸림
 
@@ -106,5 +109,5 @@
 - Secret 설정 확인
 
 **포스트가 안 보임**
-- Published 체크박스 확인
+- published 속성이 `publish required`로 설정되었는지 확인
 - GitHub Actions 로그 확인

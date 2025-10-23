@@ -79,13 +79,14 @@ async function convertPageToPost(page) {
                 properties['태그']?.multi_select?.map(tag => tag.name) ||
                 [];
 
-    const published = properties.Published?.checkbox ||
-                     properties['게시']?.checkbox ||
-                     false;
+    // published 상태 확인 (Select 타입)
+    const publishStatus = properties.published?.select?.name ||
+                         properties['게시']?.select?.name ||
+                         'not published';
 
-    // Published가 false면 건너뛰기
-    if (!published) {
-      console.log(`⏭️  Skipping draft: ${title}`);
+    // "publish required"가 아니면 건너뛰기 (필터에서 이미 처리되지만 안전장치)
+    if (publishStatus !== 'publish required') {
+      console.log(`⏭️  Skipping: ${title} (status: ${publishStatus})`);
       return null;
     }
 
@@ -164,12 +165,18 @@ async function main() {
     }
 
     // Notion 데이터베이스에서 페이지 가져오기
-    // 필터링은 나중에 처리 (속성명이 다를 수 있으므로)
+    // published == "publish required" 인 페이지만 가져오기
     const response = await notion.databases.query({
-      database_id: DATABASE_ID
+      database_id: DATABASE_ID,
+      filter: {
+        property: 'published',
+        select: {
+          equals: 'publish required'
+        }
+      }
     });
 
-    console.log(`📊 Found ${response.results.length} total pages in database\n`);
+    console.log(`📊 Found ${response.results.length} pages with 'publish required' status\n`);
 
     // 각 페이지를 Jekyll 포스트로 변환
     const posts = [];
