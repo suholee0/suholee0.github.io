@@ -8,3 +8,12 @@ Gemfile.lock
 .DS_Store
 *.swp
 *~
+
+# Node.js dependencies
+node_modules/
+package-lock.json
+npm-debug.log*
+
+# Environment files
+.env
+.env.local

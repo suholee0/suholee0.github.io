@@ -31,7 +31,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .
+          # Only add posts and images, not node_modules
+          git add _posts/*.md assets/img/posts/**/* 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
