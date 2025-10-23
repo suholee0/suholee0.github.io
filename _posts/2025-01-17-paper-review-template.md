@@ -37,9 +37,6 @@ Residual Learning: $H(x) = F(x) + x$
 
 ### Residual Block
 
-![Residual Block Structure](/assets/img/posts/2025/residual-block.png){: width="500" }
-_그림 1: ResNet의 기본 Residual Block 구조_
-
 ```python
 def residual_block(x, filters):
     # F(x) 부분
@@ -74,9 +71,6 @@ Backpropagation에서의 gradient:
 $$\frac{\partial \mathcal{L}}{\partial x} = \frac{\partial \mathcal{L}}{\partial y} \cdot \frac{\partial y}{\partial x} = \frac{\partial \mathcal{L}}{\partial y} \cdot (1 + \frac{\partial F}{\partial x})$$
 
 ## 3. Architecture
-
-![ResNet Architecture Comparison](/assets/img/posts/2025/resnet-architectures.png){: width="800" .shadow }
-_그림 2: ResNet-34와 VGG-19, Plain-34 네트워크 구조 비교_
 
 ### ResNet 구조 비교
 
