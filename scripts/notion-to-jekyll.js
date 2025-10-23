@@ -164,23 +164,12 @@ async function main() {
     }
 
     // Notion 데이터베이스에서 페이지 가져오기
+    // 필터링은 나중에 처리 (속성명이 다를 수 있으므로)
     const response = await notion.databases.query({
-      database_id: DATABASE_ID,
-      filter: {
-        or: [
-          {
-            property: 'Published',
-            checkbox: { equals: true }
-          },
-          {
-            property: '게시',
-            checkbox: { equals: true }
-          }
-        ]
-      }
+      database_id: DATABASE_ID
     });
 
-    console.log(`📊 Found ${response.results.length} published posts\n`);
+    console.log(`📊 Found ${response.results.length} total pages in database\n`);
 
     // 각 페이지를 Jekyll 포스트로 변환
     const posts = [];
