@@ -5,7 +5,11 @@ const path = require('path');
 const https = require('https');
 
 // Notion 클라이언트 초기화
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+// 2025-09-03 API 업데이트: 현재는 안정적인 버전 사용, 추후 SDK v5 업데이트 필요
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+  notionVersion: '2022-06-28' // 안정적인 버전 사용
+});
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
 // 설정
