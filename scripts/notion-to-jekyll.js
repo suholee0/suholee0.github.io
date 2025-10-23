@@ -52,6 +52,22 @@ function createSlug(title) {
     .substring(0, 50); // 너무 긴 슬러그 방지
 }
 
+// 고유한 파일명 생성 함수 (중복 방지)
+async function generateUniqueFilename(baseDir, baseName, extension) {
+  let filename = `${baseName}${extension}`;
+  let filepath = path.join(baseDir, filename);
+  let counter = 1;
+
+  // 파일이 이미 존재하면 숫자를 붙여서 고유하게 만듦
+  while (await fs.access(filepath).then(() => true).catch(() => false)) {
+    filename = `${baseName}-${counter}${extension}`;
+    filepath = path.join(baseDir, filename);
+    counter++;
+  }
+
+  return filename;
+}
+
 // Notion 페이지를 Jekyll 포스트로 변환
 async function convertPageToPost(page) {
   try {
@@ -97,7 +113,8 @@ async function convertPageToPost(page) {
     let mdString = n2m.toMarkdownString(mdblocks).parent || '';
 
     // 이미지 처리
-    const year = new Date().getFullYear();
+    const year = new Date(date).getFullYear();
+    const month = String(new Date(date).getMonth() + 1).padStart(2, '0');
     const imageDir = path.join(IMAGES_DIR, year.toString());
     await fs.mkdir(imageDir, { recursive: true });
 
@@ -110,8 +127,12 @@ async function convertPageToPost(page) {
 
       if (imageUrl.startsWith('http')) {
         const slug = createSlug(title);
+        const datePrefix = `${formatDate(date)}`;
         const ext = path.extname(imageUrl.split('?')[0]) || '.png';
-        const filename = `${slug}-${imageCounter++}${ext}`;
+
+        // 이미지 파일명: 날짜-제목슬러그-번호.확장자 (예: 2025-01-23-resnet-paper-review-1.png)
+        const imageBaseName = `${datePrefix}-${slug}-${imageCounter++}`;
+        const filename = await generateUniqueFilename(imageDir, imageBaseName, ext);
         const filepath = path.join(imageDir, filename);
 
         try {
@@ -138,9 +159,10 @@ mermaid: true
 
 `;
 
-    // 파일명 생성
+    // 파일명 생성 (중복 방지)
     const slug = createSlug(title);
-    const filename = `${formatDate(date)}-${slug}.md`;
+    const baseName = `${formatDate(date)}-${slug}`;
+    const filename = await generateUniqueFilename(POSTS_DIR, baseName, '.md');
     const filepath = path.join(POSTS_DIR, filename);
 
     // 파일 저장
