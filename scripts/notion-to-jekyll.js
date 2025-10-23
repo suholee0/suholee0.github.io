@@ -83,17 +83,40 @@ async function convertPageToPost(page) {
                 properties['날짜']?.date?.start ||
                 new Date().toISOString();
 
+    // 카테고리 처리 - Chirpy는 2단계 구조 선호 [메인, 서브]
     const categories = [];
-    if (properties.Category?.select) {
-      categories.push(properties.Category.select.name);
-    } else if (properties['카테고리']?.select) {
-      categories.push(properties['카테고리'].select.name);
-    }
-    if (categories.length === 0) categories.push('Uncategorized');
+    let mainCategory = null;
+    let subCategory = null;
 
-    const tags = properties.Tags?.multi_select?.map(tag => tag.name) ||
-                properties['태그']?.multi_select?.map(tag => tag.name) ||
-                [];
+    if (properties.Category?.select) {
+      mainCategory = properties.Category.select.name;
+    } else if (properties['카테고리']?.select) {
+      mainCategory = properties['카테고리'].select.name;
+    }
+
+    // 서브카테고리 체크 (있으면)
+    if (properties.SubCategory?.select) {
+      subCategory = properties.SubCategory.select.name;
+    } else if (properties['서브카테고리']?.select) {
+      subCategory = properties['서브카테고리'].select.name;
+    }
+
+    // 카테고리 구성 (항상 2단계로 만들기)
+    if (mainCategory) {
+      categories.push(mainCategory);
+      categories.push(subCategory || 'General');
+    } else {
+      categories.push('Uncategorized', 'General');
+    }
+
+    // 태그 처리 - 소문자 변환, 공백을 하이픈으로
+    const rawTags = properties.Tags?.multi_select?.map(tag => tag.name) ||
+                    properties['태그']?.multi_select?.map(tag => tag.name) ||
+                    [];
+
+    const tags = rawTags.map(tag =>
+      tag.toLowerCase().replace(/\s+/g, '-')
+    );
 
     // published 상태 확인 (Select 타입)
     const publishStatus = properties.published?.select?.name ||
@@ -147,13 +170,42 @@ async function convertPageToPost(page) {
       }
     }
 
+    // 선택적 Front Matter 필드 추출
+    const description = properties.Description?.rich_text?.[0]?.plain_text ||
+                       properties['설명']?.rich_text?.[0]?.plain_text ||
+                       null;
+
+    const pin = properties.Pin?.checkbox ||
+               properties['고정']?.checkbox ||
+               false;
+
+    const imageUrl = properties.Image?.url ||
+                    properties['이미지']?.url ||
+                    properties.Image?.files?.[0]?.file?.url ||
+                    properties['이미지']?.files?.[0]?.file?.url ||
+                    null;
+
     // Front Matter 생성
-    const frontMatter = `---
+    let frontMatter = `---
 title: "${title.replace(/"/g, '\\"')}"
 date: ${formatDate(date)} 00:00:00 +0900
-categories: [${categories.join(', ')}]
-tags: [${tags.join(', ')}]
-math: true
+categories: [${categories.map(c => `"${c}"`).join(', ')}]
+tags: [${tags.join(', ')}]`;
+
+    // 선택적 필드 추가
+    if (description) {
+      frontMatter += `\ndescription: "${description.replace(/"/g, '\\"')}"`;
+    }
+
+    if (pin) {
+      frontMatter += `\npin: true`;
+    }
+
+    if (imageUrl) {
+      frontMatter += `\nimage: "${imageUrl}"`;
+    }
+
+    frontMatter += `\nmath: true
 mermaid: true
 ---
 

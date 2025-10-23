@@ -29,9 +29,17 @@
    |--------|------|------|
    | Title (또는 이름) | Title | 포스트 제목 |
    | published | Select | 옵션: `not published`, `publish required`, `already published` |
-   | Category (또는 카테고리) | Select | Paper Review, Tutorial 등 |
-   | Tags (또는 태그) | Multi-select | transformer, cnn, gan 등 |
+   | Category (또는 카테고리) | Select | 메인 카테고리 (Paper Review, Tutorial 등) |
+   | SubCategory (또는 서브카테고리) | Select | 서브 카테고리 (선택, 없으면 General) |
+   | Tags (또는 태그) | Multi-select | 태그들 (자동으로 소문자 변환) |
    | Date (또는 날짜) | Date | 작성 날짜 |
+
+   **선택적 속성:**
+   | 속성명 | 타입 | 설명 |
+   |--------|------|------|
+   | Description (또는 설명) | Text | 포스트 요약 설명 |
+   | Pin (또는 고정) | Checkbox | 홈페이지 상단 고정 |
+   | Image (또는 이미지) | Files & media | 미리보기 이미지 |
 
 3. **Integration 연결**
    - 데이터베이스 페이지 우측 상단 "..." 클릭
