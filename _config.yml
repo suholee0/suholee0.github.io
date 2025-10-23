@@ -11,6 +11,9 @@ lang: ko-KR
 # Change to your timezone › https://kevinnovak.github.io/Time-Zone-Picker
 timezone: Asia/Seoul
 
+# Jekyll Build Settings
+future: true  # Show posts with future dates
+
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
