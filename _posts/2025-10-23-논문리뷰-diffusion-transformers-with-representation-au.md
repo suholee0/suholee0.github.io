@@ -8,12 +8,6 @@ mermaid: true
 ---
 
 > [“DIFFUSION TRANSFORMERS WITH REPRESENTATION AUTOENCODERS”](https://arxiv.org/abs/2510.11690) 논문 리뷰입니다.
-<details>
-<summary>참고 자료</summary>
-- 블로그나
-- 코드
-
-</details>
 
 
 ---
@@ -55,7 +49,7 @@ Diffusion model들에서 널리 사용되어온 VAE는 몇 가지 문제점이 �
 Representation Autoencoders (RAE) 는 먼저 frozen representation encoder(e.g., DINO)를 통해 `패치 개수 x hidden dimension` 크기의 latent를 뽑아줍니다. VAE와 차별적인 부분은 hidden dimension이 매우 고차원(768) 이라는 점이죠. 이후 ViT decoder가 이 latent를 받아서 pixel space로 매핑하게 됩니다. 학습 방법도 일반적으로 VAE를 학습할 때 사용되는 training recipe를 그대로 적용했습니다. 아래와 같이 LPIPS loss, L1 loss와 adversarial loss로 구성되어 있습니다.
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-2.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-2.png){: width="500" .shadow }
 
 
 이렇게 학습된 RAE는 VAE보다 우수한 reconstruction 성능을 보일 뿐더러, 연산 효율성도 더 좋습니다. 게다가 VAE와 달리 encoder에서 만들어주는 representation이 의미적인 정보를 충분히 담고있기도 합니다.
@@ -70,10 +64,10 @@ Representation Autoencoders (RAE) 는 먼저 frozen representation encoder(e.g.,
 앞서서 RAE가 VAE보다 더 좋을 수 있고 학습 가능하다는 것도 보였지만, DiT와 호환되어서 학습하는 것은 또 다른 문제입니다. 저자들은 먼저 표준적인 학습 방법을 따라서 flow matching objective로 DiT(구체적으로는 LightningDiT를 사용했다고 합니다)를 RAE와 함께 학습해보았습니다. 이 때, **DiT가 처리하는 토큰의 수는 기존의 VAE기반 DiT와 동일하게 설정하였기 때문에 computational overhead는 없다**고 강조합니다. 그런데 학습해본 결과 RAE와 함께 학습된 DiT의 생성 성능은 VAE와 함께 학습된 모델보다 크게 떨어졌습니다.
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-4.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-4.png){: width="600" .shadow }
 
 
-이에 저자들은 이 현상에 대한 몇 가지 가설을 세우고, 각각에 대해 검증하고 검증하는 방식으로 **RAE로 DiT를 잘 학습시키기 위한 방법을 찾아냅니다..!**
+이에 저자들은 이 현상에 대한 몇 가지 가설을 세우고, 각각에 대해 검증하는 방식으로 **RAE로 DiT를 잘 학습시키기 위한 방법을 찾아냅니다..!**
 
 1. **DiT 모델 구조가 바뀌어야 한다.**
 
@@ -83,7 +77,7 @@ Representation Autoencoders (RAE) 는 먼저 frozen representation encoder(e.g.,
 실험해본 결과, RAE에서 뱉어주는 token dimension $n$보다 DiT width(DiT내부에서 사용하는 channel dimension) $d$이 작을 때 학습에 실패하고 큰 성능 저하가 발생합니다. 저자들은 이론적인 근거와 함께 DiT의 width가 커져야 한다는 점을 보이고 향후 실험에서는 **RAE의 token dimension보다 크거나 같은 DiT width를 설정하는 방식으로 DiT 디자인을 변경했습니다.**
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-5.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-5.png){: width="800" .shadow }
 
 1. **Noise scheduling이 바뀌어야 한다.**
 
@@ -93,7 +87,7 @@ Representation Autoencoders (RAE) 는 먼저 frozen representation encoder(e.g.,
 한편 diffusion 과정에서 가해지는 Gaussian noise는 channel dimension에도 적용이 되는데, RAE를 사용해서 channel dimension이 매우 커졌다면 비슷한 논리로 noise의 강도가 그에 맞춰서 강해져야하는 것이 아니냐는 주장을 하게 됩니다. **즉, noise의 강도(noise schedule)가 resolution에 의존적이게 설계되는 것이 아니라 token 수와 token의 dimension의 곱으로 정의되는 effective data dimension에 의존적으로 설계되어야 한다고 주장합니다.** 이러한 방식으로 noise schedule을 변경한 결과, 아래와 같이 매우 큰 성능의 향상을 관측할 수 있었습니다.
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-6.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-6.png){: width="500" .shadow }
 
 1. **Noise-Augmented Decoding**
 
@@ -103,7 +97,7 @@ VAE는 latent를 continuous한 가우시안 분포로 인코딩하고 이를 디
 따라서 저자들은 RAE decoder를 학습할 때 의도적으로 latent에 noise를 랜덤하게 가해서 약간의 noisy한 latent를 받아도 잘 복원하도록 합니다. 실험 결과, noise가 없는 clean한 latent 분포로부터 학습된 경우에 비해 reconstruction 성능은 다소 떨어지더라도 생성품질은 더 향상되는 것을 확인했습니다.
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-7.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-7.png){: width="500" .shadow }
 
 
 이와 같은 실험들을 통해 DiT를 학습하는 테크닉을 전부 적용한 결과 이전 모델들보다 우수한 성능 뿐만 아니라 더 빠른 수렴 속도도 달성할 수 있었습니다.
@@ -121,7 +115,7 @@ VAE는 latent를 continuous한 가우시안 분포로 인코딩하고 이를 디
 DiT의 원래 width를 유지하되, 마지막에 2-layer의 2048 dimension으로 구성된 transformer module의 DDT head를 부착함으로써 효율적으로 model width를 키울 수 있게 됩니다. 이러한 테크닉까지 종합적으로 적용해서 저자들은 Diffusion Transformer에서의 SOTA를 달성했습니다. 
 
 
-![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-9.png){: width="700" .shadow }
+![image.png](/assets/img/posts/2025/2025-10-23-논문리뷰-diffusion-transformers-with-representation-au-9.png){: width="500" .shadow }
 
 
 ### Conclusion
