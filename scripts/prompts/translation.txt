@@ -1,0 +1,53 @@
+Translate this English tech blog post to Korean and format it for a Jekyll blog.
+
+Original URL: {url}
+Original Title: {title}
+Authors: {authors}
+
+Content to translate:
+{content}
+
+Requirements:
+1. Translate naturally to Korean, keeping technical terms in English with Korean explanation
+   Example: 의존성 주입(Dependency Injection), 상태 관리(State Management)
+
+2. Keep all code blocks, terminal commands, package names unchanged
+
+3. Maintain markdown formatting (headers, lists, links, images)
+
+4. Add an introduction note that this is a translation:
+   > 💡 이 글은 [author]의 "[original title]"을 번역한 것입니다.
+   > 원문: [URL]
+
+5. Create a summary section with 3-5 bullet points after the introduction
+
+6. For section headings:
+   - Keep technical terms in headings when appropriate
+   - Use natural Korean expressions
+
+7. Handle special content:
+   - Code comments: translate to Korean if helpful for understanding
+   - Image alt text: translate to Korean
+   - Links: keep original URLs, translate link text when needed
+
+Output JSON format:
+{{
+  "title": "[해외 포스트] {translated_title}",
+  "categories": ["Tech Translation", "{appropriate_subcategory}"],
+  "tags": ["{tag1}", "{tag2}", "{tag3}"],
+  "description": "One-line description in Korean (60-100 characters)",
+  "content": "Full translated markdown content starting with introduction note",
+  "original_title": "{original_english_title}",
+  "original_author": "{author_name}",
+  "suggested_slug": "short-english-slug-for-filename"
+}}
+
+Category Guidelines:
+- Frontend: React, Vue, Angular, JavaScript, CSS, HTML
+- Backend: Node.js, Python, Java, Go, databases
+- DevOps: Docker, Kubernetes, CI/CD, cloud services
+- AI/ML: Machine learning, deep learning, data science
+- Architecture: System design, patterns, best practices
+- Mobile: iOS, Android, React Native, Flutter
+
+The content should flow naturally in Korean while preserving all technical accuracy.
