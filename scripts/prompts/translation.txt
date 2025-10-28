@@ -7,6 +7,9 @@ Authors: {authors}
 Content to translate:
 {content}
 
+Available images (will be saved locally):
+{images}
+
 Requirements:
 1. Translate naturally to Korean, keeping technical terms in English with Korean explanation
    Example: 의존성 주입(Dependency Injection), 상태 관리(State Management)
@@ -30,16 +33,25 @@ Requirements:
    - Image alt text: translate to Korean
    - Links: keep original URLs, translate link text when needed
 
+8. Image handling:
+   - Include ONLY images that are essential for understanding the content
+   - Place images at appropriate locations in the translated text
+   - Use placeholder format: ![IMAGE_N] where N is the image number (1-based)
+   - Add descriptive Korean captions for each image
+   - Skip decorative or redundant images
+   - Example: ![IMAGE_1] for first image, ![IMAGE_2] for second, etc.
+
 Output JSON format:
 {{
   "title": "[해외 포스트] {translated_title}",
   "categories": ["Tech Translation", "{appropriate_subcategory}"],
   "tags": ["{tag1}", "{tag2}", "{tag3}"],
   "description": "One-line description in Korean (60-100 characters)",
-  "content": "Full translated markdown content starting with introduction note",
+  "content": "Full translated markdown content with ![IMAGE_N] placeholders where appropriate",
   "original_title": "{original_english_title}",
   "original_author": "{author_name}",
-  "suggested_slug": "short-english-slug-for-filename"
+  "suggested_slug": "short-english-slug-for-filename",
+  "images_used": [1, 3, 5]  // List of image numbers actually used in the content
 }}
 
 Category Guidelines:

@@ -54,12 +54,13 @@ class PromptManager:
         """
         return self.prompts['system']
 
-    def get_translation_prompt(self, content: str, metadata: Dict[str, Any]) -> str:
+    def get_translation_prompt(self, content: str, metadata: Dict[str, Any], images: list = None) -> str:
         """Get the translation prompt with filled variables.
 
         Args:
             content: The content to translate
             metadata: Metadata about the content (url, title, authors, etc.)
+            images: List of image URLs from the original content
 
         Returns:
             Formatted translation prompt
@@ -71,12 +72,19 @@ class PromptManager:
         # The API will return an error if the content is too long
         content_to_translate = content
 
+        # Format images list for prompt
+        if images:
+            images_str = '\n'.join([f"Image {i+1}: {url}" for i, url in enumerate(images[:20])])  # Limit to 20 images
+        else:
+            images_str = "No images available"
+
         # Fill in the prompt template
         prompt = self.prompts['translation'].format(
             url=metadata['url'],
             title=metadata['title'],
             authors=authors_str,
             content=content_to_translate,
+            images=images_str,
             translated_title=metadata['title'],
             appropriate_subcategory='General',  # Will be determined by LLM
             tag1='tag1', tag2='tag2', tag3='tag3',  # Will be determined by LLM

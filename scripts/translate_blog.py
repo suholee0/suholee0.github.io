@@ -124,12 +124,12 @@ class Translator:
         # Initialize prompt manager
         self.prompt_manager = prompt_manager or PromptManager()
 
-    def translate(self, content, metadata):
+    def translate(self, content, metadata, images=None):
         """Translate content to Korean and format for Jekyll."""
 
         # Get prompts from the prompt manager
         system_prompt = self.prompt_manager.get_system_prompt()
-        user_prompt = self.prompt_manager.get_translation_prompt(content, metadata)
+        user_prompt = self.prompt_manager.get_translation_prompt(content, metadata, images)
 
         try:
             response = self.client.chat.completions.create(
@@ -177,8 +177,17 @@ class Translator:
 class ImageHandler:
     """Downloads and processes images."""
 
-    def download_images(self, images, post_slug):
-        """Download images and save to assets directory."""
+    def download_images(self, images, post_slug, images_used=None):
+        """Download images and save to assets directory.
+
+        Args:
+            images: List of image URLs
+            post_slug: Slug for filename prefix
+            images_used: List of image indices that will be used (1-based)
+
+        Returns:
+            Dictionary mapping original URLs to local paths
+        """
         if not images:
             return {}
 
@@ -188,7 +197,20 @@ class ImageHandler:
 
         image_mapping = {}
 
-        for i, img_url in enumerate(images[:10], 1):  # Limit to 10 images
+        # If images_used is provided, only download those
+        # Otherwise, download first 10 images
+        if images_used:
+            # Only download images that will be used
+            indices_to_download = [i-1 for i in images_used if i <= len(images)]
+        else:
+            # Default behavior: download first 10
+            indices_to_download = range(min(10, len(images)))
+
+        for idx, i in enumerate(indices_to_download, 1):
+            if i >= len(images):
+                continue
+
+            img_url = images[i]
             if not img_url.startswith('http'):
                 # Handle relative URLs
                 continue
@@ -196,9 +218,9 @@ class ImageHandler:
             try:
                 response = requests.get(img_url, timeout=10)
                 if response.status_code == 200:
-                    # Save image
+                    # Save image with index based on original position
                     ext = self._get_extension(img_url, response.headers)
-                    filename = f"{post_slug}-{i}{ext}"
+                    filename = f"{post_slug}-{idx}{ext}"  # Use idx for sequential naming
                     filepath = img_dir / filename
 
                     # Optimize image with Pillow
@@ -270,19 +292,33 @@ class PostGenerator:
         # Ensure posts directory exists
         POSTS_DIR.mkdir(parents=True, exist_ok=True)
 
-        # Replace image URLs in content if we have mappings
+        # Replace image placeholders with actual paths
         content = translated_data.get('content', '')
+
+        # Get list of images that were actually used by the translator
+        images_used = translated_data.get('images_used', [])
+
         if image_mapping:
-            for old_url, new_path in image_mapping.items():
-                content = content.replace(old_url, new_path)
-                # Also add Jekyll image styling
-                content = content.replace(
-                    f'![',
-                    f'!['
-                ).replace(
-                    f']({new_path})',
-                    f']({new_path}){{: width="700" .shadow }}'
-                )
+            # Create a list of image URLs in order
+            image_urls = list(image_mapping.keys())
+
+            # Replace placeholders like ![IMAGE_1], ![IMAGE_2] with actual paths
+            for i in range(1, 21):  # Support up to 20 images
+                placeholder = f'![IMAGE_{i}]'
+
+                # Check if this image was marked as used and exists in our mapping
+                if i in images_used and i <= len(image_urls):
+                    # Get the corresponding URL and its local path
+                    original_url = image_urls[i-1]  # 0-based index
+                    local_path = image_mapping[original_url]
+
+                    # Replace placeholder with actual image markdown
+                    # Include Jekyll styling for better presentation
+                    replacement = f'![]({local_path}){{: width="700" .shadow }}'
+                    content = content.replace(placeholder, replacement)
+                else:
+                    # Remove unused placeholders
+                    content = content.replace(placeholder, '')
 
         # Generate frontmatter
         frontmatter = self._generate_frontmatter(translated_data)
@@ -364,7 +400,8 @@ def main():
     try:
         translated = translator.translate(
             article_data['content'],
-            article_data['metadata']
+            article_data['metadata'],
+            article_data['images']  # Pass images list
         )
     except Exception as e:
         error_msg = str(e)
@@ -391,10 +428,12 @@ def main():
     print(f"  ✓ Categories: {translated.get('categories')}")
     print(f"  ✓ Tags: {translated.get('tags')}")
 
-    # 3. Download images
+    # 3. Download images (only those that will be used)
     image_mapping = {}
-    if article_data['images']:
-        print("\n🖼️  Downloading images...")
+    images_used = translated.get('images_used', [])
+
+    if article_data['images'] and images_used:
+        print(f"\n🖼️  Downloading {len(images_used)} images (out of {len(article_data['images'])} available)...")
         handler = ImageHandler()
         # Use same logic for image filename prefix
         if 'suggested_slug' in translated and translated['suggested_slug']:
@@ -408,8 +447,11 @@ def main():
 
         image_mapping = handler.download_images(
             article_data['images'],
-            post_slug
+            post_slug,
+            images_used  # Pass which images to download
         )
+    elif article_data['images'] and not images_used:
+        print(f"\n📷 {len(article_data['images'])} images available but none selected for inclusion")
 
     # 4. Create post
     print("\n📝 Creating Jekyll post...")
