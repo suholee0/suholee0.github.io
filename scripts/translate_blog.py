@@ -144,6 +144,21 @@ class Translator:
 
             result = json.loads(response.choices[0].message.content)
 
+            # Check if content seems incomplete
+            translated_content = result.get('content', '')
+            if len(content) > 10000 and (
+                '(이후 내용' in translated_content or
+                '번역하며' in translated_content or
+                '동일한 구조' in translated_content or
+                len(translated_content) < len(content) * 0.3  # Less than 30% of original
+            ):
+                print("\n⚠️  Warning: Translation appears incomplete")
+                print(f"   Original: {len(content)} chars")
+                print(f"   Translated: {len(translated_content)} chars")
+
+                # Raise an error to trigger the error handling in main
+                raise Exception("Content too long - translation incomplete. API returned partial result.")
+
             # Optional: Validate translation if validation prompt exists
             validation_prompt = self.prompt_manager.get_validation_prompt(
                 content[:1000],
@@ -155,19 +170,7 @@ class Translator:
             return result
 
         except Exception as e:
-            error_msg = str(e)
-
-            # Check if it's a token limit error
-            if 'context_length_exceeded' in error_msg or 'maximum context length' in error_msg:
-                print(f"\n❌ Content too long for API")
-                print(f"   Original content: {len(content)} characters")
-                print(f"   Consider breaking the article into parts or using a model with larger context")
-                print(f"   Suggestions:")
-                print(f"   - Use GPT-4 Turbo (128k context) instead of GPT-4o-mini")
-                print(f"   - Or manually split the article into sections")
-            else:
-                print(f"Translation error: {e}")
-
+            # Just re-raise the exception - let the main function handle it
             raise
 
 
@@ -357,10 +360,32 @@ def main():
     # 2. Translate content
     print("\n🤖 Translating with OpenAI...")
     translator = Translator()
-    translated = translator.translate(
-        article_data['content'],
-        article_data['metadata']
-    )
+
+    try:
+        translated = translator.translate(
+            article_data['content'],
+            article_data['metadata']
+        )
+    except Exception as e:
+        error_msg = str(e)
+
+        # Check if it's a token limit error
+        if 'context_length_exceeded' in error_msg or 'maximum context length' in error_msg or 'token' in error_msg.lower():
+            print("\n" + "="*60)
+            print("❌ ERROR: Content Too Long for Translation")
+            print("="*60)
+            print(f"The article is too long to translate in a single request.")
+            print(f"Content length: {len(article_data['content'])} characters")
+            print(f"\nThis typically happens with articles over 10,000-15,000 characters.")
+            print(f"\nSuggestions:")
+            print(f"1. Try a shorter article")
+            print(f"2. Use a model with larger context (e.g., gpt-4-turbo-preview)")
+            print(f"3. Manually split the article into parts")
+            print("="*60)
+        else:
+            print(f"\n❌ Translation failed: {error_msg}")
+
+        sys.exit(1)
 
     print(f"  ✓ Translated title: {translated.get('title')}")
     print(f"  ✓ Categories: {translated.get('categories')}")
