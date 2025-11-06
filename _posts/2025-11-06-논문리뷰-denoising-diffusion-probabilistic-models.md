@@ -188,13 +188,31 @@ L &= -D_{KL}( q(x_T \mid x_0) \| p(x_T) ) \\
 \end{aligned}
 $$
 
-최종적으로 목적식이 3개의 항으로 구성됩니다 ($L_T$, $L_{t-1}$, $L_0$):
+최종적으로 목적식이 3개의 항으로 구성됩니다:
 
-1. **$L_T = D_{KL}( q(x_T \mid x_0) \| p(x_T) )$**: 최종적으로 노이즈가 추가된 입력이 standard Gaussian prior와 얼마나 유사한지
+**1) $L_T$ 항**
 
-2. **$L_{t-1} = \mathbb{E}_{q(x_t \mid x_0)} [ D_{KL}(q(x_{t-1} \mid x_t,x_0) \| p_\theta(x_{t-1} \mid x_t)) ]$**: $t$ 시점의 reverse step이 ground truth reverse step과 얼마나 유사한지. 원본 데이터인 $x_0$ 가 조건으로 주어진 상황에서는 tractable하게 계산 가능
+$$
+L_T = D_{KL}( q(x_T \mid x_0) \| p(x_T) )
+$$
 
-3. **$L_0 = -\mathbb{E}_{q(x_1 \mid x_0)} [ \log p_\theta (x_0 \mid x_1) ]$**: 가장 마지막 reconstruction (VAE의 reconstruction loss와 유사)
+최종적으로 노이즈가 추가된 입력이 standard Gaussian prior와 얼마나 유사한지를 나타냅니다.
+
+**2) $L_{t-1}$ 항**
+
+$$
+L_{t-1} = \mathbb{E}_{q(x_t \mid x_0)} \left[ D_{KL}(q(x_{t-1} \mid x_t,x_0) \| p_\theta(x_{t-1} \mid x_t)) \right]
+$$
+
+$t$ 시점의 reverse step이 ground truth reverse step과 얼마나 유사한지를 나타냅니다. 원본 데이터인 $x_0$ 가 조건으로 주어진 상황에서는 tractable하게 계산 가능합니다.
+
+**3) $L_0$ 항**
+
+$$
+L_0 = -\mathbb{E}_{q(x_1 \mid x_0)} \left[ \log p_\theta (x_0 \mid x_1) \right]
+$$
+
+가장 마지막 reconstruction을 의미합니다 (VAE의 reconstruction loss와 유사).
 
 <br>
 
@@ -210,7 +228,7 @@ $$
 
 여기서 $\alpha_t=1-\beta_t$, $\bar{\alpha_t}=\prod_{i=1}^{t}{\alpha_i}$ 입니다.
 
-<details>
+<details markdown="1">
 <summary>유도 과정 보기</summary>
 
 $t$ 시점의 샘플 $x_t$ 를 reparameterization trick을 이용하면 다음과 같이 쓸 수 있습니다:
@@ -237,7 +255,7 @@ $$
 q(x_{t-1} \mid x_t,x_0)=\mathcal{N}\left( x_{t-1}; \frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})x_t + \sqrt{\bar{\alpha}_{t-1}}(1-\alpha_t)x_0}{1-\bar{\alpha_t}} , \frac{(1-\alpha_t)(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t}\mathbf{I} \right)
 $$
 
-<details>
+<details markdown="1">
 <summary>유도 과정 보기</summary>
 
 위에서 $q(x_t \mid x_0)$ 와 $q(x_{t-1} \mid x_0)$ 을 구한 것과 Bayes rule을 활용해서 유도할 수 있습니다:
@@ -320,8 +338,13 @@ $$
 
 특히 DDPM의 핵심적인 기여는 다음과 같습니다:
 
-1. **목적식의 단순화**: 복잡한 ELBO를 노이즈 예측 문제 $\|\epsilon - \epsilon_\theta(x_t,t)\|^2$ 로 변환
-2. **효율적인 학습**: Weighting 계수를 제거하여 어려운 denoising task에 집중
-3. **이론과 실제의 균형**: 수학적으로 엄밀하면서도 구현이 간단한 알고리즘 제시
+- **목적식의 단순화**: 복잡한 ELBO를 노이즈 예측 문제로 변환
+
+$$
+\|\epsilon - \epsilon_\theta(x_t,t)\|^2
+$$
+
+- **효율적인 학습**: Weighting 계수를 제거하여 어려운 denoising task에 집중
+- **이론과 실제의 균형**: 수학적으로 엄밀하면서도 구현이 간단한 알고리즘 제시
 
 이후 Stable Diffusion, DALL-E, Imagen 등 수많은 diffusion 기반 생성 모델들의 토대가 된 매우 중요한 논문이며, 앞으로 diffusion model을 공부하실 때 이 내용이 도움이 되었으면 좋겠습니다.
