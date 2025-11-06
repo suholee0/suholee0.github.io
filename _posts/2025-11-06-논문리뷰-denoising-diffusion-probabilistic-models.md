@@ -23,7 +23,7 @@ math: true
 ## Summary
 
 - Diffusion model의 기초가 되는 연구로, 데이터에 점진적으로 노이즈를 추가하는 forward process와 이를 역으로 제거하는 reverse process를 학습
-- ELBO 기반의 목적식을 단순화하여 노이즈를 예측하는 문제로 변환: $L_{simple} = \mathbb{E}[||\epsilon - \epsilon_\theta(x_t,t)||^2_2]$
+- ELBO 기반의 목적식을 단순화하여 노이즈를 예측하는 문제로 변환
 - 어려운 denoising task에 집중할 수 있도록 weighting 계수를 제거하여 생성 품질을 크게 향상
 - 이후 수많은 diffusion 기반 생성 모델 연구의 토대가 된 핵심 논문
 
